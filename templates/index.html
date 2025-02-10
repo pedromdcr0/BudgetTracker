@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Tracker</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+
 </head>
 
 <body>
@@ -15,6 +16,56 @@
         </div>
     </header>
     <div class="grid-container">
+        <div class="top-grid">
+            <button id="openModal" class="button-new-item">New item</button>
+            <input type="text" class="search-item">
+            <button>Search</button>
+        </div>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>New item</h2>
+                <form id="newItemForm">
+                    <div class="type-container">
+                        <label class="label-newitem-container">Type</label>
+                        <select id="type" required class="inputs-newitem-container">
+                            <option value="fixedcost">Fixed cost</option>
+                            <option value="singlecost">Single cost</option>
+                            <option value="fixedinput">Fixed input</option>
+                            <option value="singleinput">Single input</option>
+                        </select>
+                    </div>
+                    <div class="description-container">
+                        <label class="label-newitem-container">Description:</label>
+                        <input class="inputs-newitem-container" type="text" id="description" placeholder="Ex: Water bill" required>
+                    </div>
+
+                    <div class="value-container">
+                        <label class="label-newitem-container">Value:</label>
+                        <input class="inputs-newitem-container" type="number" id="value" placeholder="R$ 0,00" required>
+                    </div>
+
+                    <div class="category-container">
+                        <label class="label-newitem-container">Category:</label>
+                        <select class="inputs-newitem-container" id="category" required>
+                            <option value="food">Food</option>
+                            <option value="leisure">Leisure</option>
+                            <option value="fixed">Fixed</option>
+                            <option value="others">Others</option>
+                        </select>
+                    </div>
+
+                    <div class="deadline-container">
+                        <label class="label-newitem-container" >Deadline:</label>
+                        <input class="inputs-newitem-container" type="date" id="deadline" required>
+                    </div>
+
+                    <div class="submit-container">
+                        <button type="submit">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
         <table class="grid">
             <thead>
                 <tr>
@@ -23,26 +74,36 @@
                     <th class="grid-description">Description</th>
                     <th class="grid-tag">Tags</th>
                     <th class="grid-deadline">Deadline</th>
+                    <th class="grid-category">Category</th>
                     <th class="grid-created">Created in</th>
                 </tr>
             </thead>
             <tbody>
+                {% for item in items %}
                 <tr>
                     <td class="grid-id">
-                        <span><a href="#">123</a></span>
+                        <span><a href="/{{ item.id }}">{{ item.id }}</a></span>
                     </td>
-                    <td class="grid-type">tipo</td>
-                    <td class="grid-description"> descrição exemplo</td>
-                    <td class="grid-tag">#tag</td>
-                    <td class="grid-deadline">yyyy-mm-dd</td>
-                    <td class="grid-created">yyyy-mm-dd</td>
+                    <td class="grid-type">{{ item.type }}</td>
+                    <td class="grid-description">{{ item.description }}</td>
+                    <td class="grid-tag">
+                        {% for tag in item.tags.split(',') %}
+                        #{{ tag.strip() }}
+                        {% endfor %}
+                    </td>
+                    <td class="grid-deadline">{{ item.deadline.strftime('%Y-%m-%d') if item.deadline else 'Sem prazo' }}
+                    </td>
+                    <td class="grid-category">{{ item.category }}</td>
+                    <td class="grid-created">{{ item.created_in.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
     <footer>
         Budget Tracker, 2025
     </footer>
+    <script src="/static/js/scripts.js"></script>
 </body>
 
 </html>

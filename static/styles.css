@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Oswald:wght@200..700&display=swap');
+
+:root {
+    --primary-font: "Oswald";
+}
+
+body {
+    background-color: #272727;
+    font-family: var(--primary-font);
+    margin: 0;
+    
+}
+
+.header {
+    background-color: #1A1A1A;
+    padding-bottom: 40px;
+    border-bottom-right-radius: 5%;
+    border-bottom-left-radius: 5%;
+}
+
+
+.logo-container {
+    padding-left: 120px;
+    padding-top: 40px;
+}
+
+.bt-link {
+    position: relative;
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 300;
+    text-decoration: none;
+    color: #B6E75F;
+    overflow: hidden;
+    transition: width 0.3s ease-in-out;
+    width: 40px; /* Tamanho inicial do "BT" */
+    white-space: nowrap;
+}
+
+.bt-link::after {
+    content: "Budget Tracker"; /* Texto completo */
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.bt-link:hover {
+    width: 170px; /* Largura do texto completo */
+}
+
+.bt-link:hover::after {
+    opacity: 1;
+}
+
+.bt-link:hover span {
+    position: relative;
+    left: -40px; /* Move o "BT" para a esquerda */
+    opacity: 0; /* Some o "BT" */
+    transition: opacity 2.9s ease-in-out, left 2.9s ease-in-out;
+}
+
+.grid-container {
+    margin: 20px;
+    border-radius: 5%;
+    background-color: #1A1A1A;
+    color: white;
+}
+
+.grid {
+    width: 100%;
+}
+
+tr {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: #1f1f1f;
+}
+
+thead th {
+    font-weight: bold;
+    text-align: left;
+    font-weight: 300;
+    font-size: 16px;
+}
+
+footer {
+    text-align: right;
+    padding-right: 70px;
+    font-weight: 200;
+    color: #7b7b7b;
+}
+
+tbody td {
+    text-align: left;
+    font-weight: 200;
+    font-size: 16px;
+}
+
+.grid-id {
+    align-items: left;
+    width: 50px;
+}
+
+.grid-type {
+    align-items: left;
+    width: 50px;
+}
+
+.grid-description {
+    align-items: left;
+    width: 300px;
+}

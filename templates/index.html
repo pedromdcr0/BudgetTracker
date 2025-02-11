@@ -17,47 +17,53 @@
     </header>
     <div class="grid-container">
         <div class="top-grid">
-            <button id="openModal" class="button-new-item">New item</button>
+            <button id="openModal" class="button-new-item">+ New item</button>
             <input type="text" class="search-item">
-            <button>Search</button>
+            <button class="search-button">Search</button>
         </div>
         <div id="modal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <h2>New item</h2>
-                <form id="newItemForm">
-                    <div class="type-container">
-                        <label class="label-newitem-container">Type</label>
-                        <select id="type" required class="inputs-newitem-container">
-                            <option value="fixedcost">Fixed cost</option>
-                            <option value="singlecost">Single cost</option>
-                            <option value="fixedinput">Fixed input</option>
-                            <option value="singleinput">Single input</option>
-                        </select>
-                    </div>
+                <h2 class="newitem-title">New item</h2>
+                <form id="newItemForm" method="POST" action="/add_item">
                     <div class="description-container">
-                        <label class="label-newitem-container">Description:</label>
-                        <input class="inputs-newitem-container" type="text" id="description" placeholder="Ex: Water bill" required>
+                        <textarea class="description-input-newitem-container" rows="3" type="text" id="description"
+                            placeholder="Describe the item:" required name="description"></textarea>
+                    </div>
+                    <div class="type-value-container">
+                        <div class="type-container">
+                            <label class="label-newitem-container">Type:</label>
+                            <select id="type" name="type" required class="inputs-newitem-container">
+                                <option value="fixedcost">Fixed cost</option>
+                                <option value="singlecost">Single cost</option>
+                                <option value="fixedinput">Fixed input</option>
+                                <option value="singleinput">Single input</option>
+                            </select>
+                        </div>
+
+
+                        <div class="value-container">
+                            <label class="label-newitem-container">Value:</label>
+                            <input class="inputs-newitem-container" type="text" id="value" name="value"
+                                placeholder="$0,00" required>
+                        </div>
                     </div>
 
-                    <div class="value-container">
-                        <label class="label-newitem-container">Value:</label>
-                        <input class="inputs-newitem-container" type="number" id="value" placeholder="R$ 0,00" required>
-                    </div>
+                    <div class="category-deadline-container">
+                        <div class="category-container">
+                            <label class="label-newitem-container">Category:</label>
+                            <div class="category-input-container">
+                                <input type="text" class="inputs-newitem-container" id="category" name="category"
+                                    autocomplete="off" required>
+                                <ul id="suggestionsDropdown" class="category-dropdown"></ul>
+                            </div>
+                        </div>
 
-                    <div class="category-container">
-                        <label class="label-newitem-container">Category:</label>
-                        <select class="inputs-newitem-container" id="category" required>
-                            <option value="food">Food</option>
-                            <option value="leisure">Leisure</option>
-                            <option value="fixed">Fixed</option>
-                            <option value="others">Others</option>
-                        </select>
-                    </div>
-
-                    <div class="deadline-container">
-                        <label class="label-newitem-container" >Deadline:</label>
-                        <input class="inputs-newitem-container" type="date" id="deadline" required>
+                        <div class="deadline-container">
+                            <label class="label-newitem-container">Deadline:</label>
+                            <input class="inputs-newitem-container" type="date" name="deadline" id="deadline" required
+                                onchange="openCalendar()">
+                        </div>
                     </div>
 
                     <div class="submit-container">
@@ -72,6 +78,7 @@
                     <th class="grid-id">Id</th>
                     <th class="grid-type">Type</th>
                     <th class="grid-description">Description</th>
+                    <th class="grid-value">Value</th>
                     <th class="grid-tag">Tags</th>
                     <th class="grid-deadline">Deadline</th>
                     <th class="grid-category">Category</th>
@@ -82,14 +89,21 @@
                 {% for item in items %}
                 <tr>
                     <td class="grid-id">
-                        <span><a href="/{{ item.id }}">{{ item.id }}</a></span>
+                        <span><a href="/item/{{ item.id }}" class="grid-id-a">{{ item.id }}</a></span>
                     </td>
                     <td class="grid-type">{{ item.type }}</td>
-                    <td class="grid-description">{{ item.description }}</td>
+                    <td class="grid-description">
+                        <a href="/item/{{ item.id }}" class="grid-description-a">{{ item.description }}</a>
+                    </td>
+                    <td class="grid-value">{{ item.value | round(2) | replace('.', ',') }}</td>
                     <td class="grid-tag">
-                        {% for tag in item.tags.split(',') %}
-                        #{{ tag.strip() }}
-                        {% endfor %}
+                        {% if item.tags %}
+                            {% for tag in item.tags.split(',') %}
+                                #{{ tag.strip() }}
+                            {% endfor %}
+                        {% else %}
+                        <span> - </span>
+                        {% endif %}
                     </td>
                     <td class="grid-deadline">{{ item.deadline.strftime('%Y-%m-%d') if item.deadline else 'Sem prazo' }}
                     </td>
